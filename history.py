@@ -21,20 +21,29 @@ def render_history_page():
 
     today = datetime.today()
 
+    # 기본값: 직전 월
+    default_year = today.year
+    default_month = today.month - 1
+
+    if default_month == 0:
+        default_year -= 1
+        default_month = 12
+
     with tabs[0]:
         col1, col2 = st.columns(2)
         with col1:
+            year_options = list(range(today.year - 1, today.year + 2))
             year = st.selectbox(
                 "📅 연도",
-                options=[today.year - 1, today.year, today.year + 1],
-                index=1,
+                options=year_options,
+                index=year_options.index(default_year) if default_year in year_options else 1,
                 key="monthly_year_select"
             )
         with col2:
             month = st.selectbox(
                 "📅 월",
                 options=list(range(1, 13)),
-                index=today.month - 1,
+                index=default_month - 1,
                 key="monthly_month_select"
             )
 
@@ -89,8 +98,8 @@ def render_history_page():
 
         year = st.selectbox(
             "📅 연도 선택",
-            options=[today.year - 1, today.year, today.year + 1],
-            index=1,
+            options=[today.year - 2, today.year - 1, today.year, today.year + 1],
+            index=year_options.index(default_year + 1) if default_year in year_options else 2,
             key="yearly_year_select"
         )
 
