@@ -87,11 +87,13 @@ def render_history_page():
                 if not receipt_keys:
                     st.info("해당 월에 저장된 영수증 이미지가 없습니다.")
                 else:
-                    cols = st.columns(3)
+                    cols = st.columns(3, gap="large")
                     for idx, key in enumerate(receipt_keys):
                         with cols[idx % 3]:
                             image_bytes = get_receipt_bytes_from_s3(key)
+                            st.markdown("<div style='margin-bottom: 1rem;'>", unsafe_allow_html=True)
                             st.image(image_bytes, use_column_width=True)
+                            st.markdown("</div>", unsafe_allow_html=True)
 
     with tabs[1]:
         st.subheader("📆 연간 지출 요약")
